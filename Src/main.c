@@ -79,7 +79,11 @@ static void MX_USART2_UART_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 enum{first=9600,second=115200,third=1000000};
-
+typedef struct
+{
+	GPIO_TypeDef* led_ports[4]; 
+	uint16_t led_pins[4]; 
+}LED;
 /* USER CODE END 0 */
 
 /**
@@ -112,6 +116,16 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+	LED led;
+	led.led_ports[0]=GPIOA;
+	led.led_ports[1]=GPIOA;
+	led.led_ports[2]=GPIOA;
+	led.led_ports[3]=GPIOA;
+	
+	led.led_pins[0]=GPIO_PIN_0;
+	led.led_pins[1]=GPIO_PIN_1;
+	led.led_pins[2]=GPIO_PIN_2;
+	led.led_pins[3]=GPIO_PIN_3;
 //first question
 	for(int j=first;j<third;j++)
 	{
@@ -123,6 +137,14 @@ int main(void)
       sprintf(string, "HELLO UART %4d\n",i);
       HAL_UART_Transmit(&huart2,(uint8_t*) string,16,100);
 	 }
+	}
+	//second question
+	uint8_t my_char[8];
+  HAL_UART_Receive_IT(&huart2,(uint8_t*) my_char,8);
+	if(my_char[0]==255 && my_char[1]==255 && my_char[6]==200 && my_char[7]==200)
+	{
+		for(int j=0;j<4;j++)
+		HAL_GPIO_WritePin(led.led_ports[j],led.led_pins[j],my_char[j+2]);
 	}
   /* USER CODE END 2 */
 
