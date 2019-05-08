@@ -236,7 +236,8 @@ void EXTI15_10_IRQHandler(void)
   /* USER CODE END EXTI15_10_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_13);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
-
+   const char push_but[17]="User Key pressed\n";
+   HAL_UART_Transmit(&huart2,(uint8_t*) push_but,17,100);
   /* USER CODE END EXTI15_10_IRQn 1 */
 }
 

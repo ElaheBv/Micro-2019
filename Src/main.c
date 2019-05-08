@@ -127,7 +127,7 @@ int main(void)
 	led.led_pins[2]=GPIO_PIN_2;
 	led.led_pins[3]=GPIO_PIN_3;
 //first question
-	for(int j=first;j<third;j++)
+	for(int j=first;j<=third;j++)
 	{
 		huart2.Init.BaudRate = j;
 		HAL_UART_Init(&huart2);
