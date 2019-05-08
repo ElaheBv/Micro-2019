@@ -65,7 +65,7 @@
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-
+volatile int flag=0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -141,11 +141,7 @@ int main(void)
 	//second question
 	uint8_t my_char[8];
   HAL_UART_Receive_IT(&huart2,(uint8_t*) my_char,8);
-	if(my_char[0]==255 && my_char[1]==255 && my_char[6]==200 && my_char[7]==200)
-	{
-		for(int j=0;j<4;j++)
-		HAL_GPIO_WritePin(led.led_ports[j],led.led_pins[j],my_char[j+2]);
-	}
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -155,6 +151,14 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+		if (flag)
+		{
+			if(my_char[0]==255 && my_char[1]==255 && my_char[6]==200 && my_char[7]==200)
+	{
+		for(int j=0;j<4;j++)
+		HAL_GPIO_WritePin(led.led_ports[j],led.led_pins[j],my_char[j+2]);
+	}
+		}
   }
   /* USER CODE END 3 */
 }
@@ -299,6 +303,15 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 { 
   /* USER CODE BEGIN 6 */
+	void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(huart);
+	flag=1;
+  /* NOTE: This function Should not be modified, when the callback is needed,
+           the HAL_UART_TxCpltCallback could be implemented in the user file
+   */
+}
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */

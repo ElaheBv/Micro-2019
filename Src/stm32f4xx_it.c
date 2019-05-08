@@ -72,6 +72,7 @@
 
 /* External variables --------------------------------------------------------*/
 extern UART_HandleTypeDef huart2;
+extern int flag ;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
